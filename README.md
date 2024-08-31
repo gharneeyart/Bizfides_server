@@ -42,7 +42,7 @@ npm install
 Create a `.env` file in the root directory and add the following variables:
 ```sh
 PORT=your-port-number
-MONGODB_URI=your-mongodb-uri
+MONGODB_URL=your-mongodb-uri
 JWT_SECRET=your-jwt-secret
 EMAIL_SERVICE=your-email-service
 EMAIL_USER=your-email-username

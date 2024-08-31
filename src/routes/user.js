@@ -1,5 +1,6 @@
 import express from 'express';
 import { login, logout, signUp, verifyEmail, forgotPassword, resetPassword } from '../controllers/auth.js';
+import { deleteUser, getAllUsers, getOneUser, updateUser } from '../controllers/user.js';
 
 
 const router = express.Router();
@@ -24,5 +25,10 @@ router.post('/forgot-password', forgotPassword);
 // This route expects a token in the request body and the new password, then calls the resetPassword controller function
 router.post('/reset-password', resetPassword);
 
+// User routes
+router.get("/users",getAllUsers)
+router.get("/user/:userId",getOneUser)
+router.put("/user/update", updateUser )
+router.delete("/:userId",deleteUser)
 
 export default router;

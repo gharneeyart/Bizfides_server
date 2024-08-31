@@ -1,11 +1,12 @@
 import express from 'express';
 import { login, logout, signUp, verifyEmail, forgotPassword, resetPassword } from '../controllers/auth.js';
+import { upload } from '../helpers/multer.js';
 
 
 const router = express.Router();
 
 // Route for handling user registration
-router.post('/signup', signUp);
+router.post('/signup', upload.single('image'), signUp);
 
 // Route for verifying user's email
 // This route expects a token in the URL parameters and calls the verifyEmail controller function

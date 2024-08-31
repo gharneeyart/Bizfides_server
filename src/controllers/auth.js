@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import { comparePassword, hashPassword } from "../helpers/auth.js";
 import { generateResetToken, generateTokenAndSetCookie} from "../utils/generateTokenAndSetCookies.js";
+import { cloudinary } from "../configs/cloudinary.config.js";
 import { sendVerifyEmail, sendResetEmail } from "../utils/sendEmail.js";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
@@ -13,6 +14,7 @@ export const signUp = async (req, res) => {
     try {
         // Destructure user details from the request body
         const { firstName, lastName, phoneNumber, email, password } = req.body;
+        const image = req.file
 
         // Validate required fields
         if (!firstName) {
@@ -41,7 +43,7 @@ export const signUp = async (req, res) => {
         const hashed = await hashPassword(password);
 
         // Generate a random verification token
-        const token = Math.floor(100000 + Math.random() * 900000).toString();
+        const tokens = Math.floor(100000 + Math.random() * 900000).toString();
 
         // Create a new user instance with the provided details and the verification token
         const user = new User({
@@ -50,19 +52,31 @@ export const signUp = async (req, res) => {
             phoneNumber,
             email,
             password: hashed,
-            verificationToken: token, 
-            verificationTokenExpires: Date.now() + 24 * 60 * 60 * 1000 // Token valid for 24 hours
+            verificationToken: tokens, 
+            verificationTokenExpires: Date.now() + 24 * 60 * 60 * 1000, // Token valid for 24 hours
         });
+
+        // handle image upload
+        if(image){
+            try {
+             const imagePath = await cloudinary.uploader.upload(image.path);
+             user.image = imagePath.secure_url;
+             user.imagePublicId = imagePath.public_id;
+            } catch (err) {
+             console.log(err);
+             return res.json({success: false, message: "Error uploading image", err})
+            }
+         }
 
         // Save the new user to the database
         await user.save();
         console.log(user);
 
         // Generate the verification URL to be sent via email
-        const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${token}`;
+        const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${tokens}`;
        
         // Generate a JWT token, set it in a cookie, and send the verification email
-        generateTokenAndSetCookie(res, user._id);
+        const token = generateTokenAndSetCookie(res, user._id);
         await sendVerifyEmail(user.email, user.firstName, verificationUrl);
 
         // Respond with the user data and the verification token

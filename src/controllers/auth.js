@@ -136,7 +136,7 @@ export const login = async (req, res) => {
         }
 
         // Generate a JWT token, set it in a cookie, and update the user's last login time
-        generateTokenAndSetCookie(res, user._id);
+        const token = generateTokenAndSetCookie(res, user._id);
         user.lastLogin = new Date();
         await user.save();
 
@@ -147,6 +147,7 @@ export const login = async (req, res) => {
             user: {
                 ...user._doc,
                 password: undefined,
+                token
             }
         });
     } catch (error) {

@@ -6,20 +6,24 @@ const userSchema = new Schema(
         firstName:{
             type: String,
             required: true,
+            match: /^[a-zA-Z\s'-]+$/
         },
         lastName:{
             type: String,
             required: true,
+            match: /^[a-zA-Z\s'-]+$/
         },
         phoneNumber:{
             type: String,
             required: true,
-            unique: true,  
+            unique: true, 
+            match: /^(\+234\d{10}|234\d{10}|0[789][01]\d{8})$/ 
         },
         email:{
             type: String,
             required: true,
             unique: true, 
+            match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         },
         password:{
             type: String,
@@ -28,14 +32,16 @@ const userSchema = new Schema(
             maxlength: 64,
         },
         image:{
-            type: String
+            type: String,
+            default: ""
         },
         imagePublicId:{
             type: String
         },
         role:{
-            type: Number,
-            default: 0,
+            type: String,
+            enum: ["user", "admin"],
+            default: "user",
         },
         lastLogin: {
             type: Date,

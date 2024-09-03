@@ -180,8 +180,8 @@ export const forgotPassword = async (req, res) => {
 
         // Generate a password reset token and send it to the user's email address
         const resetToken = generateResetToken(user._id);
-        const domain = "http://localhost:8070/api/v1/auth";
-        const resetLink = `${domain}/reset-password/${resetToken}`;
+        // const domain = "http://localhost:8070/api/v1/;
+        const resetLink = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${resetToken}`;
         await sendResetEmail(email, user.firstName, resetLink);
 
         // Respond with a success message and the reset token

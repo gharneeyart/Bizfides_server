@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter</title>
+    <style>
+      body {
+        font-family: Inter, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .email-header {
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #1a1f71;
+      }
+      .email-hero {
+        background-image: url(https://res.cloudinary.com/dhkblplov/image/upload/v1725457629/z1hu4uib0efddvlyziaa.svg);
+        text-align: center;
+        height: 183px;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .email-header img {
+        max-width: 150px;
+      }
+      .email-body {
+        padding: 20px;
+      }
+      .email-body h1 {
+        color: #2b2b2b;
+        font-size: 24px;
+        text-align: left;
+        margin-bottom: 20px;
+      }
+      .email-body .name {
+        font-family: Roboto, sans-serif;
+        font-weight: 600;
+      }
+      .email-body p {
+        color: #2b2b2b;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 10px 0;
+      }
+      .email-body .extra {
+        color: #2b2b2b;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.6;
+      }
+
+      .email-body a {
+        color: #1a1f71;
+        text-decoration: none;
+      }
+      .email-section {
+        margin-bottom: 20px;
+      }
+      .email-section h2 {
+        color: #2b2b2b;
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      .email-footer {
+        padding: 0 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #2b2b2b;
+      }
+      .email-footer .follow {
+        font-weight: 600;
+        text-align: center;
+        font-size: 16px;
+        color: #1a1f71;
+      }
+      .email-footer a {
+        color: #1a1f71;
+        margin: 0 10px;
+        text-decoration: none;
+      }
+      .social-icons img {
+        max-width: 20px;
+        margin: 0 5px;
+      }
+      .underline{
+        text-decoration: underline;
+      }
+      @media screen and (max-width: 600px) {
+        .email-body h1 {
+          font-size: 20px;
+        }
+        .email-body p {
+          font-size: 14px;
+        }
+        .email-section h2 {
+          font-size: 18px;
+        }
+        .email-hero {
+            background-size: contain;
+            max-height: 130px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="email-header">
+        <img
+          src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457578/aazvpa8kx3x8mw1ws5pp.svg"
+          alt="Bizfides Logo"
+        />
+      </div>
+      <div class="email-hero">
+      </div>
+      <div class="email-body">
+        <p class="name">Dear {{firstName}},</p>
+
+        <p>
+          Welcome to our September newsletter! We're excited to share valuable
+          insights, news, and tips to help you grow your online presence. In
+          this issue, we'll cover SEO tips, news about our new social media
+          management service, and a success story from one of our clients.
+        </p>
+        <div class="email-section">
+          <h2>Featured Article:</h2>
+          <strong>5 Ways to Boost Your Website's SEO</strong>
+          <br />
+          <span
+            >Learn how to improve your website’s search engine ranking and drive
+            more traffic to your site.
+            <br />
+            <span class="extra">Tips include:</span>
+          </span>
+          <span>
+            <li>Conducting keyword research</li>
+            <li>Optimizing meta tags and titles</li>
+            <li>Creating high-quality, engaging content</li>
+            <li>Building high-quality backlinks</li>
+            <li>Regularly updating your website</li>
+          </span>
+          <br />
+        </div>
+        <div class="email-section">
+          <h2>News and Updates:</h2>
+          <ul>
+            <li>
+              <strong>New Service:</strong> Social Media Management - Let us
+              help you manage your social media presence and grow your online
+              community.
+            </li>
+            <li>
+              <strong>Team Expansion</strong> - Meet our new experts in digital
+              marketing and web design!
+            </li>
+            <li>
+              <strong>New Client Portal</strong> - Access your account
+              information, invoices, and project updates in one place.
+            </li>
+          </ul>
+        </div>
+        <div class="email-section">
+          <h2>Success Story:</h2>
+          <span
+            >Mr. Alex of DEAL EMPIRE saw a 50% increase in website traffic after
+            using our SEO services.</span
+          >
+          <br />
+          <span
+            >Hear from our client about their experience working with
+            Bizfides.</span
+          >
+        </div>
+        <div class="email-section">
+          <h2>Get in Touch:</h2>
+          <ul>
+            <li>
+              Need help with your online presence? Reply to this email or
+              contact us at
+              <a href="mailto:bizfidessupport@gmail.com"
+                >bizfidessupport@gmail.com</a
+              >
+            </li>
+            <li>Follow us on social media for the latest updates and tips!</li>
+          </ul>
+        </div>
+        <p>Best regards,<br />The Bizfides Team</p>
+      </div>
+      <div class="email-footer">
+        <p class="follow">
+          Follow us on social media for the latest updates and tips!
+        </p>
+        <div class="social-icons">
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457425/f2lkz3lczlpuwi4toejb.svg"
+              alt="Facebook"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457343/h2bx7ealhirzxfmeoezf.png"
+              alt="Twitter"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457477/ui7he2tnpd0rsjvxuq3h.svg"
+              alt="LinkedIn"
+          /></a>
+          <a href="#"
+            ><img
+              src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457541/ih6av4klgyysdsjw6jkf.svg"
+              alt="Instagram"
+          /></a>
+        </div>
+        <p>Copyright © 2024 Bizfides</p>
+        <p>
+          Wouldn't want to miss out? But if you prefer not to hear from us
+          again, you can <span class="underline"><a href="#">unsubscribe</a></span>here.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

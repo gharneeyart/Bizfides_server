@@ -94,6 +94,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
     </body>
     </html>
 `;
+
 export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="en">

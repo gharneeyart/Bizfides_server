@@ -16,4 +16,4 @@ router.put("/user/update",isLoggedIn, upload.single('image'), updateUser )
 // Delete a user
 router.delete("/:userId",deleteUser)
 
-export default router;
+export default router

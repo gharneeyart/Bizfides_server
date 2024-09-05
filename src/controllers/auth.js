@@ -36,7 +36,7 @@ export const signUp = async (req, res) => {
         // Check if a user with the given email already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ success: false, message: "Email is taken" });
+            return res.status(400).json({ success: false, message: "User already exist!" });
         }
 
         // Hash the user's password for secure storage
@@ -123,6 +123,12 @@ export const verifyEmail = async (req, res) => {
 export const login = async (req, res) => {
     const { email, password } = req.body;
     try {
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
+        if (!password) {
+            return res.status(400).json({ success: false, message: "Password is required" });
+        }
         // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {

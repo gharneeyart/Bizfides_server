@@ -73,7 +73,9 @@ export const signUp = async (req, res) => {
         console.log(user);
 
         // Generate the verification URL to be sent via email
-        const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${tokens}`;
+        const domain = process.env.FRONTEND_URL
+        // const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${tokens}`;
+         const verificationUrl = `${domain}/verify-email/${tokens}`
        
         // Generate a JWT token, set it in a cookie, and send the verification email
         const token = generateTokenAndSetCookie(res, user._id);
@@ -185,9 +187,12 @@ export const forgotPassword = async (req, res) => {
         }
 
         // Generate a password reset token and send it to the user's email address
+        const domain = process.env.FRONTEND_URL
         const resetToken = generateResetToken(user._id);
+        const resetLink = `${domain}/reset-password/${resetToken}`
+        
         // const domain = "http://localhost:8070/api/v1/;
-        const resetLink = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${resetToken}`;
+        // const resetLink = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${resetToken}`;
         await sendResetEmail(email, user.firstName, resetLink);
 
         // Respond with a success message and the reset token

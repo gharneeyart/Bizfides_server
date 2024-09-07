@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Email</title>
+    <title>Confirm Email</title>
     <style>
         body {
             font-family: Inter, sans-serif;
@@ -55,7 +55,7 @@
             color: #2B2B2B;
         }
         .email-footer a {
-            color: #1A1F71;
+            color: #192b64;
             margin: 0 5px;
             text-decoration: none;
         }
@@ -72,31 +72,28 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457679/pilcrpysfzi63nla2z8y.svg" alt="Bizfides Logo">
+            <img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749300/20240819_231242_1_cqqunk.png" alt="Bizfides Logo">
         </div>
         <div class="email-body">
             <h1>Welcome !</h1>
             <p class="name">Dear {{firstName}},</p>
             <p>
-                You're now part of the Bizfides community! We're thrilled to have you on board.     
-             </p>
+                Thanks for signing up with Bizfides! We're excited to have you on board. To complete your registration and access our services, please verify your email address by clicking on the link below:
+            </p>
+            <p><a href={{verifyCode}}>www.bizfidesverify.com</a></p>
             <p>
-                Thanks for verifying your email address. You can now access our services and start growing your online presence.           
+                This step ensures that we can keep you updated on your account and services.
             </p>
             <p>
-                Here's a quick start guide to get you started:
+                If you have any issues or questions, feel free to reach out to us at <a href="mailto:bizfidessupport@gmail.com">bizfidessupport@gmail.com</a>
             </p>
-            <ul>
-                <li>Your Dashboard <a href="">hppt//dash://</a></li>
-                <li>Contact us via <a href="mailto:bizfidessupport@gmail.com">bizfidessupport@gmail.com</a></li>
-            </ul>
             <p>Best regards,<br>The Bizfides Team</p>
         </div>
         <div class="email-footer">
-            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457425/f2lkz3lczlpuwi4toejb.svg" alt="Facebook"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749344/Component_23_kveaih.png" alt="Facebook"></a>
             <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457343/h2bx7ealhirzxfmeoezf.png" alt="Twitter"></a>
-            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457477/ui7he2tnpd0rsjvxuq3h.svg" alt="LinkedIn"></a>
-            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457541/ih6av4klgyysdsjw6jkf.svg" alt="Instagram"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749469/Group_87_x2fqro.png" alt="LinkedIn"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749428/Group_88_ihoec5.png" alt="Instagram"></a>
             <p>Copyright © 2024</p>
         </div>
     </div>

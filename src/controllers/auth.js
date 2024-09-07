@@ -2,7 +2,7 @@ import User from "../models/user.js";
 import { comparePassword, hashPassword } from "../helpers/auth.js";
 import { generateResetToken, generateTokenAndSetCookie} from "../utils/generateTokenAndSetCookies.js";
 import { cloudinary } from "../configs/cloudinary.config.js";
-import { sendVerifyEmail, sendResetEmail } from "../utils/sendEmail.js";
+import { sendVerifyEmail, sendResetEmail, WelcomeEmail } from "../utils/sendEmail.js";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
 
@@ -111,6 +111,8 @@ export const verifyEmail = async (req, res) => {
         user.verificationTokenExpires = undefined;
         await user.save();
   
+        await WelcomeEmail(user.email, user.firstName);
+
         res.status(200).json({
             success: true,
             message: 'Email verified successfully',
@@ -172,35 +174,41 @@ export const logout = async (req, res) => {
     res.status(200).json({ success: true, message: "Logged out successfully" });
 }
 
-// Controller for initiating password recovery (forgot password)
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
+
+        // Validate email
         if (!email) {
             return res.status(400).json({ success: false, message: "Email is required" });
         }
 
-        // Find the user by email
+        // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // Generate a password reset token and send it to the user's email address
-        const domain = process.env.FRONTEND_URL
+        // Generate reset token
         const resetToken = generateResetToken(user._id);
-        const resetLink = `${domain}/reset-password/${resetToken}`
-        
-        // const domain = "http://localhost:8070/api/v1/;
-        // const resetLink = `${req.protocol}://${req.get('host')}/api/v1/auth/reset-password/${resetToken}`;
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        await user.save();
+
+        // Create password reset link
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+        // Send password reset email
         await sendResetEmail(email, user.firstName, resetLink);
 
-        // Respond with a success message and the reset token
-        return res.json({ message: "Password reset token generated successfully", resetToken });
+        return res.json({
+            success: true,
+            message: "Reset password instructions sent successfully",
+        });
+
     } catch (err) {
-        // Handle any errors during password recovery
-        console.log(err);
-        return res.status(500).json({ message: "Password reset token failed" });
+        console.error("Forgot password error: ", err);
+        return res.status(500).json({ success: false, message: "Server error, please try again later." });
     }
 };
 
@@ -208,42 +216,42 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
     try {
         const { newPassword } = req.body;
-        const resetToken = req.headers.authorization;
-  
-        // Validate the new password and the reset token
+        const { resetToken } = req.params;
+
+        // Validate new password and token
         if (!newPassword) {
-            return res.status(400).json({ success: false, message: 'Enter new password' });
-        }
-        if (!resetToken || !resetToken.startsWith("Bearer")) {
-            return res.status(401).json({ success: false, message: 'Invalid token or no reset token provided' });
+            return res.status(400).json({ success: false, message: 'New password is required' });
         }
 
-        // Extract the token from the "Bearer" scheme
-        const token = resetToken.split(" ")[1];
-
-        // Verify the token using JWT
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        if (!decodedToken) {
-            return res.status(403).json({ success: false, message: "Invalid/expired token provided" });
+        if (!resetToken) {
+            return res.status(400).json({ success: false, message: 'Reset token is required' });
         }
 
-        // Find the user by the decoded token's userId
-        const userId = decodedToken.userId;
-        const user = await User.findById(userId);
+        // Find user by resetToken and ensure the token has not expired
+        const user = await User.findOne({
+            resetPasswordToken: resetToken,
+            resetPasswordExpires: { $gt: Date.now() }, // Token should still be valid
+        });
+
         if (!user) {
-            return res.status(400).json({ error: "Invalid user" });
+            return res.status(403).json({ success: false, message: "Invalid or expired reset token" });
         }
 
         // Hash the new password and update the user's password
         const hashedPassword = await hashPassword(newPassword);
         user.password = hashedPassword;
+
+        // Clear the reset token and expiration
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+
         await user.save();
 
-        // Respond with a success message
-        res.json({ success: true, message: "Password reset successfully" });
+        return res.json({ success: true, message: "Password reset successfully" });
+
     } catch (err) {
-        // Handle any errors during password reset
-        console.log(err.message);
+        console.error("Reset password error: ", err);
         return res.status(500).json({ success: false, message: "Password reset failed", error: err.message });
     }
 };
+

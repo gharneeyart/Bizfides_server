@@ -70,3 +70,32 @@ export const WelcomeEmail = (email, firstName) => {
 
   return transporter.sendMail(mailOptions);
 };
+export const newsletterEmail = (email, name) => {
+  const mailOptions = {
+    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Bizfides Newsletter',
+    template: 'newletterTemplate', 
+    context: {
+      name,
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+export const contactFormEmail = (email, name, message, subject) => {
+  const mailOptions = {
+    from: email,
+    to: process.env.ADMIN_EMAIL,
+    subject: `Contact Form Message from ${name}`,
+    template: 'contactFormTemplate', 
+    context: {
+      name,
+      email,
+      subject,
+      message
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
+};

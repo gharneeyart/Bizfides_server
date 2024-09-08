@@ -1,51 +1,101 @@
 import nodemailer from 'nodemailer';
-import { VERIFICATION_EMAIL_TEMPLATE, PASSWORD_RESET_REQUEST_TEMPLATE } from './emailTemplates.js';
+import hbs from 'nodemailer-express-handlebars';
+import path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config(); 
 
 // Configure the Nodemailer transporter using environment variables for email authentication
 const transporter = nodemailer.createTransport({
-  service: 'Gmail', // Specify the email service provider (e.g., Gmail)
+  service: 'Gmail',
   auth: {
-    user: process.env.EMAIL_USER, // Email address used for sending emails
-    pass: process.env.EMAIL_PASS, // Email account password
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-/**
- * Sends an email verification message to the user.
- *
- * @param {string} email - Recipient's email address.
- * @param {string} firstName - User's first name for personalization.
- * @param {string} verifyCode - Verification link or code to include in the email.
- * @returns {Promise} - Promise representing the result of the email sending process.
- */
-export const sendVerifyEmail = (email, firstName, verifyCode) => {
-  const mailOptions = {
-    from: `"Bizfides" <${process.env.EMAIL_USER}>`, // Sender name and email
-    to: email, // Recipient's email address
-    subject: 'Email Verification', // Email subject line
-    html: VERIFICATION_EMAIL_TEMPLATE
-      .replace("{firstName}", firstName) // Replace placeholder with user's first name
-      .replace("{verificationLink}", verifyCode), // Replace placeholder with the verification link
-    category: "Email Verification", // Optional category for email tracking
-  };
-
-  return transporter.sendMail(mailOptions); // Send the email
+// Set up Handlebars with Nodemailer
+const handlebarOptions = {
+  viewEngine: {
+    extName: ".hbs",
+    partialsDir: path.resolve('/views/'), 
+    defaultLayout: false,
+  },
+  viewPath: path.resolve('./views/'), 
+  extName: ".hbs",
 };
 
-// Send password reset email
-export const sendResetEmail = (email, firstName, resetURL) => {
+transporter.use('compile', hbs(handlebarOptions));
+
+
+export const sendVerifyEmail = (email, firstName, verifyCode) => {
   const mailOptions = {
-    from: `"Bizfides" <${process.env.EMAIL_USER}>`, // Sender name and email
-    to: email, // Recipient's email address
-    subject: 'Password Reset Request', // Email subject line
-    html: PASSWORD_RESET_REQUEST_TEMPLATE
-      .replace("{firstName}", firstName) // Replace placeholder with user's first name
-      .replace("{resetURL}", resetURL), // Replace placeholder with the reset URL
-    category: "Reset Password", // Optional category for email tracking
+    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Email Verification',
+    template: 'confirmEmailTemplate', // Name of the .hbs file without the extension
+    context: {
+      firstName,
+      verificationLink: verifyCode, // Pass dynamic values to the template
+    },
   };
 
-  return transporter.sendMail(mailOptions); // Send the email
+  return transporter.sendMail(mailOptions);
+};
+
+export const sendResetEmail = (email, firstName, resetURL) => {
+  const mailOptions = {
+    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Password Reset Request',
+    template: 'resetPasswordTemplate',
+    context: {
+      firstName,
+      resetURL,
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+export const WelcomeEmail = (email, firstName) => {
+  const mailOptions = {
+    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Welcome to Bizfides!',
+    template: 'welcomeEmailTemplate', 
+    context: {
+      firstName,
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+export const newsletterEmail = (email, name) => {
+  const mailOptions = {
+    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Bizfides Newsletter',
+    template: 'newletterTemplate', 
+    context: {
+      name,
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+export const contactFormEmail = (email, name, message, subject) => {
+  const mailOptions = {
+    from: email,
+    to: process.env.ADMIN_EMAIL,
+    subject: `Contact Form Message from ${name}`,
+    template: 'contactFormTemplate', 
+    context: {
+      name,
+      email,
+      subject,
+      message
+    },
+  };
+
+  return transporter.sendMail(mailOptions);
 };

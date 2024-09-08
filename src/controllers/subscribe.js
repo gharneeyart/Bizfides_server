@@ -1,5 +1,6 @@
 import { createWriter, writeToCsv } from '../helpers/csvWriters.js';
 import { newsletterEmail, contactFormEmail } from '../utils/sendEmail.js';
+import { readSubscribeFile, readContactFile } from '../helpers/csvParser.js';
 
 
 const contactCsvWriter = createWriter('contact_submissions.csv', [
@@ -62,4 +63,22 @@ export const subscribe = async (req, res) => {
         res.status(500).json({ message: "Failed to save subscriber data" });
     }
 };
+
+export const getSubscribers = async (req, res) => {
+    try {
+        const subscribers = await readSubscribeFile();
+        res.status(200).json({ subscribers });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Failed to read subscribers data" });
+    }
+};
+export const getContactForms = async (req, res) => {
+    try {
+        const contactForms = await readContactFile();
+        res.status(200).json({ contactForms });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Failed to read contact submission data" });
+    }
+};
+
 

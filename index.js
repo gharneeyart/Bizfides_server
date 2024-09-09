@@ -14,7 +14,10 @@ const app = express();
 app.use(express.json());
 
 
-app.use(cors({ origin: '*' }));
+let corsOptions = { 
+    origin : ['http://localhost:5173', 'http://localhost:5174', 'https://bizfides--eight.vercel.app, https://bizfides-server.onrender.com'], 
+} 
+app.use(cors(corsOptions));
 
 const port = process.env.PORT || 3000;
 

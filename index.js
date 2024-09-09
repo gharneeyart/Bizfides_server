@@ -14,10 +14,7 @@ const app = express();
 app.use(express.json());
 
 
-let corsOptions = { 
-    origin : ['http://localhost:5173', 'http://localhost:5174', 'https://bizfides--eight.vercel.app'], 
-} 
-app.use(cors(corsOptions));
+app.use(cors({ origin: '*' }));
 
 const port = process.env.PORT || 3000;
 

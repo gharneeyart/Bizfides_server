@@ -1,12 +1,10 @@
 import express from 'express';
-import { subscribe, submitContactForm, getSubscribers, getContactForms } from '../controllers/subscribe.js';
-import { validateEmail } from '../middlewares/validateEmail.js';
+import validateForm from '../middlewares/validateForm.js';
+import { submitContactForms, subscribeNewsletter } from '../controllers/google.js';
 
 const router = express.Router();
 
-router.post('/subscribe', validateEmail, subscribe);
-router.post('/contact', submitContactForm);
-router.get('/subscribers', getSubscribers);
-router.get('/contactforms', getContactForms);
+router.post('/gsubscribe', validateForm, subscribeNewsletter);
+router.post('/gcontact', validateForm, submitContactForms);
 
 export default router;

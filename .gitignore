@@ -2,5 +2,5 @@
 
 node_modules
 .env
-subscribers.csv
-contact_submissions.csv
+secrets.json
+

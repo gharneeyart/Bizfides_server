@@ -1,4 +1,3 @@
-import { google } from 'googleapis';
 import { SHEET_ID, sheets } from '../configs/googleAuth.js';
 
 

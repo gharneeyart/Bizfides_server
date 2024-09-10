@@ -1,5 +1,5 @@
 import { appendToSheet } from "../helpers/googleSheet.js";
-import { newsletterEmail, contactFormEmail } from "../utils/sendEmail.js";
+import { newsletterEmail, contactFormEmail, contactEmail } from "../utils/sendEmail.js";
 import dotenv from 'dotenv';
 
 dotenv.config(); 
@@ -13,6 +13,7 @@ export const submitContactForms = async (req, res) => {
         const values = [[name, email,subject, message, new Date().toISOString()]];
         await appendToSheet('Sheet2!A:E', values); // Specify the sheet and range
         await contactFormEmail(email, name, message, subject, downloadLink);
+        await contactEmail(email, name)
         res.status(200).send('Form submitted successfully');
     } catch (error) {
         console.error('Error saving contact form data:', error);

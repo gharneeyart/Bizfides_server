@@ -70,32 +70,59 @@ export const WelcomeEmail = (email, firstName) => {
 
   return transporter.sendMail(mailOptions);
 };
-export const newsletterEmail = (email, name) => {
+export const newsletterEmail = async (email, name) => {
   const mailOptions = {
-    from: `"Bizfides" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: 'Bizfides Newsletter',
-    template: 'newletterTemplate', 
-    context: {
-      name,
-    },
+      from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Bizfides Newsletter',
+      template: 'newletterTemplate',
+      context: { name },
   };
 
-  return transporter.sendMail(mailOptions);
+  try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Newsletter email sent:', info.response);
+  } catch (error) {
+      console.error('Error sending newsletter email:', error);
+  }
 };
-export const contactFormEmail = (email, name, message, subject) => {
+
+export const contactEmail = async (email, name) => {
   const mailOptions = {
-    from: email,
-    to: process.env.ADMIN_EMAIL,
-    subject: `Contact Form Message from ${name}`,
-    template: 'contactFormTemplate', 
-    context: {
-      name,
-      email,
-      subject,
-      message
-    },
+      from: `"Bizfides" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Bizfides Contact Information',
+      template: 'contactEmailTemplate',
+      context: { name },
   };
 
-  return transporter.sendMail(mailOptions);
+  try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Contact email sent:', info.response);
+  } catch (error) {
+      console.error('Error sending contact email:', error);
+  }
+};
+
+export const contactFormEmail = async (email, name, message, subject, downloadLink) => {
+  const mailOptions = {
+      from: email,
+      to: process.env.ADMIN_EMAIL,
+      subject: `Contact Form Message from ${name}`,
+      template: 'contactFormTemplate',
+      context: {
+          name,
+          email,
+          subject,
+          message,
+          downloadLink,
+      },
+  };
+
+  try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Contact form email sent:', info.response);
+  } catch (error) {
+      console.error('Error sending contact form email:', error);
+  }
 };

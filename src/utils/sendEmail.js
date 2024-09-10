@@ -83,7 +83,7 @@ export const newsletterEmail = (email, name) => {
 
   return transporter.sendMail(mailOptions);
 };
-export const contactFormEmail = (email, name, message, subject) => {
+export const contactFormEmail = (email, name, message, subject, downloadLink) => {
   const mailOptions = {
     from: email,
     to: process.env.ADMIN_EMAIL,
@@ -93,7 +93,8 @@ export const contactFormEmail = (email, name, message, subject) => {
       name,
       email,
       subject,
-      message
+      message,
+      downloadLink
     },
   };
 

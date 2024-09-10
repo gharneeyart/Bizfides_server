@@ -1,9 +1,14 @@
 import { google } from 'googleapis';
-import key from '../secrets.json' assert { type: 'json' };
+// import key from '../secrets.json' assert { type: 'json' };
 
 import dotenv from 'dotenv';
 
 dotenv.config(); 
+
+const key = {
+  client_email: process.env.GOOGLE_CLIENT_EMAIL,
+  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n') // Handle multiline keys
+};
 
 export const SHEET_ID = process.env.SHEET_IDS;
 

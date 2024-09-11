@@ -3,7 +3,7 @@ import { comparePassword, hashPassword } from "../helpers/auth.js";
 import { generateResetToken, generateTokenAndSetCookie} from "../utils/generateTokenAndSetCookies.js";
 import { cloudinary } from "../configs/cloudinary.config.js";
 import { sendVerifyEmail, sendResetEmail, WelcomeEmail } from "../utils/sendEmail.js";
-import jwt from 'jsonwebtoken';
+import { generateRandomToken} from "../helpers/generateToken.js";
 import dotenv from "dotenv";
 
 // Load environment variables from .env file
@@ -43,7 +43,7 @@ export const signUp = async (req, res) => {
         const hashed = await hashPassword(password);
 
         // Generate a random verification token
-        const tokens = Math.floor(100000 + Math.random() * 900000).toString();
+        const tokens = generateRandomToken();
 
         // Create a new user instance with the provided details and the verification token
         const user = new User({
@@ -73,9 +73,9 @@ export const signUp = async (req, res) => {
         console.log(user);
 
         // Generate the verification URL to be sent via email
-        const domain = process.env.FRONTEND_URL
+        // const domain = 
         // const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${tokens}`;
-         const verificationUrl = `${domain}/verify-email/${tokens}`
+         const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${tokens}`
        
         // Generate a JWT token, set it in a cookie, and send the verification email
         const token = generateTokenAndSetCookie(res, user._id);
@@ -89,6 +89,27 @@ export const signUp = async (req, res) => {
         res.status(500).json({ success: false, message: err.message });
     }
 };
+
+// Resend token function 
+// export const resendVerificationToken = async (req, res) => {
+//     try {
+//         const { email } = req.body;
+
+//         // Find the user by email
+//         const user = await User.findOne({ email });
+//         if (!user) {
+//             return res.status(404).json({ success: false, message: "User not found" });
+//         }
+
+//         // Resend the verification token
+//         const newToken = await resendToken(user);
+
+//         return res.json({ success: true, message: "Verification token resent", token: newToken });
+//     } catch (err) {
+//         console.error("Resend Token Error:", err.message);
+//         res.status(500).json({ success: false, message: "Server error" });
+//     }
+// };
 
 // Controller for email verification
 export const verifyEmail = async (req, res) => {

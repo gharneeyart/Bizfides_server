@@ -1,13 +1,19 @@
 import { google } from 'googleapis';
-import key from '../secrets.json' assert { type: 'json' };
+
 
 import dotenv from 'dotenv';
 
 dotenv.config(); 
 
+const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+
+// Replace escaped newline characters in private key
+const formattedPrivateKey = privateKey.replace(/\\n/g, '\n'); // Handle multiline keys
+
 export const SHEET_ID = process.env.SHEET_IDS;
 
-const client = new google.auth.JWT(key.client_email, null, key.private_key, [
+const client = new google.auth.JWT(clientEmail, null, formattedPrivateKey, [
   'https://www.googleapis.com/auth/spreadsheets',
 ]);
 

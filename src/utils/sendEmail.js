@@ -36,10 +36,9 @@ export const sendVerifyEmail = (email, firstName, verifyCode) => {
     template: 'confirmEmailTemplate', // Name of the .hbs file without the extension
     context: {
       firstName,
-      verificationLink: verifyCode, // Pass dynamic values to the template
+      verifyCode, // Pass dynamic values to the template
     },
   };
-
   return transporter.sendMail(mailOptions);
 };
 

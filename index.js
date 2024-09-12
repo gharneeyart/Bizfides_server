@@ -20,7 +20,7 @@ const port = process.env.PORT || 3000;
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/user', userRoutes)
-app.use('/api',sendRoutes)
+app.use('/api/v1',sendRoutes)
 
 app.get('/', (req, res) =>{
     return res.send('Welcome to bizfides server')});

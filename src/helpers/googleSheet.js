@@ -1,11 +1,11 @@
-import { SHEETID, sheets } from '../configs/googleAuth.js';
+import { SHEET_ID, sheets } from '../configs/googleAuth.js';
 
 
 // Function to append data to the Google Sheet
 export const appendToSheet = async (range, values) => {
     try {
         const response = await sheets.spreadsheets.values.append({
-            spreadsheetId: SHEETID,
+            spreadsheetId: SHEET_ID,
             range: range, // Use the passed range
             insertDataOption: 'INSERT_ROWS',
             valueInputOption: 'RAW',

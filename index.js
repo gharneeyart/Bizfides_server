@@ -7,7 +7,6 @@ import sendRoutes from './src/routes/send.js'
 import cors from 'cors'; 
 
 
-
 dotenv.config();
 
 const app = express();

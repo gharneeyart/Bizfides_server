@@ -5,6 +5,7 @@ import { cloudinary } from "../configs/cloudinary.config.js";
 import { sendVerifyEmail, sendResetEmail, WelcomeEmail } from "../utils/sendEmail.js";
 import { generateRandomToken} from "../helpers/generateToken.js";
 import dotenv from "dotenv";
+import admin from "../configs/firebaseAdmin.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -89,6 +90,36 @@ export const signUp = async (req, res) => {
         res.status(500).json({ success: false, message: err.message });
     }
 };
+
+export const googleAuth = async (req, res) => {
+    const { token, userDetails } = req.body;
+  
+    try {
+      // Verify the token with Firebase Admin SDK
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      const uid = decodedToken.uid;
+  
+      // Check if the user exists in your database
+      let user = await User.findOne({ firebaseUID: uid });
+  
+      if (!user) {
+        // If the user doesn't exist, create a new user in the database
+        user = new User({
+          firebaseUID: uid,
+          firstName: userDetails.firstName,
+          lastName: userDetails.lastName,
+          email: userDetails.email
+        });
+        await user.save();
+      }
+  
+      res.status(200).json({ message: 'User authenticated', user });
+    } catch (error) {
+      console.error("Error verifying token or saving user:", error);
+      res.status(401).json({ message: 'Unauthorized', error });
+    }
+  };
+  
 
 // Resend token function 
 // export const resendVerificationToken = async (req, res) => {

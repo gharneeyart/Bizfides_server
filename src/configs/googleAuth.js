@@ -11,7 +11,7 @@ const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 // Replace escaped newline characters in private key
 const formattedPrivateKey = privateKey.replace(/\\n/g, '\n'); // Handle multiline keys
 
-export const SHEET_ID = process.env.SHEET_IDS;
+export const SHEETID = process.env.SHEET_ID;
 
 const client = new google.auth.JWT(clientEmail, null, formattedPrivateKey, [
   'https://www.googleapis.com/auth/spreadsheets',

@@ -26,7 +26,6 @@ router.post('/logout', logout);
 // Route for initiating the password recovery process
 router.post('/forgot-password', forgotPassword);
 
-// Route for resetting the user's password
 // This route expects a token in the request body and the new password, then calls the resetPassword controller function
 router.post('/reset-password/:resetToken', resetPassword);
 

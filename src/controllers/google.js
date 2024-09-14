@@ -1,5 +1,6 @@
 import { appendToSheet } from "../helpers/googleSheet.js";
 import { newsletterEmail, contactFormEmail, contactEmail } from "../utils/sendEmail.js";
+import { emailExists } from "../helpers/googleSheet.js";
 import dotenv from 'dotenv';
 
 dotenv.config(); 
@@ -10,6 +11,12 @@ export const submitContactForms = async (req, res) => {
     const downloadLink = process.env.DOWNLOAD_URL
 
     try {
+        // Check if the email already exists
+        const exists = await emailExists(email);
+        if (exists) {
+            return res.status(400).send('Email already subscribed');
+        }
+         // Append the new subscriber if email doesn't exist
         const values = [[name, email,subject, message, new Date().toISOString()]];
         await appendToSheet('Sheet2!A:E', values); // Specify the sheet and range
         await contactFormEmail(email, name, message, subject, downloadLink);

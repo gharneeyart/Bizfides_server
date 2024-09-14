@@ -112,6 +112,8 @@ export const signUp = async (req, res) => {
 // };
 
 // Controller for email verification
+
+
 export const verifyEmail = async (req, res) => {
     const { token } = req.params;
   
@@ -154,10 +156,19 @@ export const login = async (req, res) => {
         if (!password) {
             return res.status(400).json({ success: false, message: "Password is required" });
         }
+
         // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ success: false, message: "User not found or not verified" });
+        }
+
+        // Check if the user has registered with Google
+        if (user.googleId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Please login with Google OAuth" 
+            });
         }
 
         // Compare the provided password with the stored hashed password
@@ -176,8 +187,15 @@ export const login = async (req, res) => {
             success: true, 
             message: "Logged in successfully",
             user: {
-                ...user._doc,
-                password: undefined,
+                id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                image: user.image,
+                role: user.role,
+                lastLogin: user.lastLogin,
+                isVerified: user.isVerified,
                 token
             }
         });
@@ -187,6 +205,8 @@ export const login = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
+
 
 // Controller for user logout
 export const logout = async (req, res) => {

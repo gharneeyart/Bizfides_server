@@ -2,7 +2,12 @@ import mongoose from 'mongoose'
 
 const { Schema } = mongoose; 
 const userSchema = new Schema(
-    {
+     {
+        googleId: {
+          type: String,
+          unique: true,
+          sparse: true
+        },
         firstName:{
             type: String,
             required: true,
@@ -15,9 +20,9 @@ const userSchema = new Schema(
         },
         phoneNumber:{
             type: String,
-            required: true,
             unique: true, 
-            match: /^(\+234\d{10}|234\d{10}|0[789][01]\d{8})$/ 
+            match: /^(\+234\d{10}|234\d{10}|0[789][01]\d{8})$/,
+            default: "+2349012345678"
         },
         email:{
             type: String,
@@ -28,7 +33,9 @@ const userSchema = new Schema(
         },
         password:{
             type: String,
-            required: true,
+            required: function() {
+                return !this.googleId;
+              },
             minlength: 6,
             maxlength: 64,
         },

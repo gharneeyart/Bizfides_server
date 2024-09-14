@@ -22,24 +22,3 @@ export const appendToSheet = async (range, values) => {
     }
 };
 
-// import { google } from 'googleapis';
-// import auth from '../configs/googleAuth.js';
-
-// const sheets = google.sheets({ version: 'v4', auth });
-
-// // Function to append data to the Google Sheet
-// export const appendToSheet = async (range, values) => {
-//     const SPREADSHEET_ID = '1GwVIMV-YEDt5MTvCZrL1bRYwyE3izIY3adB4VGKNXsg';
-
-//     try {
-//         await sheets.spreadsheets.values.append({
-//             spreadsheetId: SPREADSHEET_ID,
-//             range, // Sheet and range (e.g., 'Sheet1!A:D')
-//             valueInputOption: 'RAW',
-//             resource: { values },
-//         });
-//     } catch (error) {
-//         throw new Error('Google Sheets API error: ' + error.message);
-//     }
-// };
-

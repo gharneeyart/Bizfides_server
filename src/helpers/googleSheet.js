@@ -21,3 +21,4 @@ export const appendToSheet = async (range, values) => {
         throw new Error('Google Sheets API error: ' + error.message);
     }
 };
+

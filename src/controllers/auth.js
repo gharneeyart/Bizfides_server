@@ -164,10 +164,11 @@ export const login = async (req, res) => {
         }
 
         // Check if the user has registered with Google
-        if (user.googleId) {
+
+        if (user.googleId && user.googleId != 'reset' ) {
             return res.status(400).json({ 
                 success: false, 
-                message: "Please login with Google OAuth" 
+                message: "Invalid email or password" 
             });
         }
 
@@ -281,6 +282,9 @@ export const resetPassword = async (req, res) => {
         // Hash the new password and update the user's password
         const hashedPassword = await hashPassword(newPassword);
         user.password = hashedPassword;
+        if (user.googleId) {
+            user.googleId = 'reset'
+        }
 
         // Clear the reset token and expiration
         user.resetPasswordToken = null;

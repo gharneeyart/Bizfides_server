@@ -3,6 +3,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import User from '../models/user.js'; // Adjust the path according to your project structure
 import jwt from 'jsonwebtoken';
+import {  WelcomeEmail } from "../utils/sendEmail.js";
 
 dotenv.config();
 
@@ -30,7 +31,9 @@ passport.use(new GoogleStrategy({
         email: emails[0].value,
         isVerified: true // Mark as verified since OAuth ensures email validity
       });
+
       await user.save();
+      await WelcomeEmail(user.email, user.firstName);
     }
 
     // Generate JWT and return user info

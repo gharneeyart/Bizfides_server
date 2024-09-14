@@ -39,7 +39,8 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
     const { token, user } = req.user;
     // Send user information as a query parameter
-    res.redirect(`${frontendurl}/oauth-callback?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
+    const frontendURL = 'http://localhost:5173/google/callback';
+    res.redirect(`${frontendURL}?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
   });
 
 

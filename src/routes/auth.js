@@ -1,21 +1,21 @@
 import express from 'express';
 import passport from '../configs/passport.js';
-import { login, logout, signUp, verifyEmail, forgotPassword, resetPassword} from '../controllers/auth.js';
+import { login, logout, signUp, verifyEmail, forgotPassword, resetPassword, resendVerificationToken } from '../controllers/auth.js';
 import { upload } from '../helpers/multer.js';
+import dotenv from 'dotenv';
 
 const router = express.Router();
 
-
+dotenv.config();
 
 
 // Route for handling user registration
 router.post('/signup', upload.single('image'), signUp);
 
-// Route for verifying user's email
 // This route expects a token in the URL parameters and calls the verifyEmail controller function
 router.post('/verify-email/:token', verifyEmail);
 
-// router.post('/resend-token', resendVerificationToken);
+router.post('/resend-token', resendVerificationToken);
 
 // Route for handling user login
 router.post('/login', login);
@@ -39,8 +39,8 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
     const { token, user } = req.user;
     // Send user information as a query parameter
-    const frontendURL = 'http://localhost:5173/google/callback';
-    res.redirect(`${frontendURL}?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
+    const frontendURL = process.env.FRONTEND_URL
+    res.redirect(`${frontendURL}/google/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
   });
 
 

@@ -24,6 +24,7 @@ export const getOneUser = async (req, res) => {
         }
         res.json({success: true, message: "User fetched successfully", user})
     } catch (err) {
+        console.error(err)
         res.status(500).json({success: false, message: err.message})
     }
 }

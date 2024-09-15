@@ -97,8 +97,6 @@ export const signUp = async (req, res) => {
     console.log(user);
 
     // Generate the verification URL to be sent via email
-    // const domain =
-    // const verificationUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/verify-email/${tokens}`;
     const verificationUrl = `${process.env.FRONTEND_URL}/verify-email/${tokens}`;
 
     // Generate a JWT token, set it in a cookie, and send the verification email
@@ -109,7 +107,7 @@ export const signUp = async (req, res) => {
     return res.json({ success: true, user, token });
   } catch (err) {
     // Handle any errors during sign-up
-    console.error("Signup Error:", err.message);
+    console.error("Signup Error:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -144,8 +142,8 @@ export const resendVerificationToken = async (req, res) => {
       token: newToken,
     });
   } catch (err) {
-    console.error("Resend Token Error:", err.message);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Resend Token Error:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -180,7 +178,8 @@ export const verifyEmail = async (req, res) => {
     });
   } catch (error) {
     // Handle any errors during email verification
-    res.status(500).json({ success: false, error: "Server error" });
+    console.error("Error verifying email:", err);
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 
@@ -276,7 +275,7 @@ export const forgotPassword = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "Invalid email" });
     }
 
     // Generate reset token
@@ -301,7 +300,7 @@ export const forgotPassword = async (req, res) => {
       .status(500)
       .json({
         success: false,
-        message: "Server error, please try again later.",
+        message: err.message,
       });
   }
 };

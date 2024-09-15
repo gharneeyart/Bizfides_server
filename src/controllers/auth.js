@@ -13,6 +13,8 @@ import {
 import { generateRandomToken } from "../helpers/generateToken.js";
 import dotenv from "dotenv";
 
+
+// Load environment variables from .env file
 dotenv.config();
 
 // Controller for user registration (sign-up)

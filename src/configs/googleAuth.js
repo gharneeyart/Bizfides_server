@@ -1,3 +1,5 @@
+// Set up the Google API client
+import { google } from 'googleapis';
 import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables
 
@@ -14,10 +16,9 @@ const secrets = JSON.parse(Buffer.from(secretsBase64, 'base64').toString('utf8')
 const clientEmail = secrets.client_email;
 const privateKey = secrets.private_key.replace(/\\n/g, '\n'); // Replace escaped newlines
 
-// Set up the Google API client
-import { google } from 'googleapis';
 
-export const SHEET_ID = '1GwVIMV-YEDt5MTvCZrL1bRYwyE3izIY3adB4VGKNXsg';
+export const SHEET_ID = process.env.SHEET_ID;
+
 
 const client = new google.auth.JWT(clientEmail, null, privateKey, [
     'https://www.googleapis.com/auth/spreadsheets',

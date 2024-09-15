@@ -29,7 +29,7 @@ passport.use(new GoogleStrategy({
         firstName: name.givenName,
         lastName: name.familyName,
         email: emails[0].value,
-        isVerified: true // Mark as verified since OAuth ensures email validity
+        isVerified: true 
       });
 
       await user.save();

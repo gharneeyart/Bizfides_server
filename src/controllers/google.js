@@ -14,10 +14,10 @@ export const submitContactForms = async (req, res) => {
         await appendToSheet('Sheet2!A:E', values); // Specify the sheet and range
         await contactFormEmail(email, name, message, subject, downloadLink);
         await contactEmail(email, name)
-        res.status(200).send('Form submitted successfully');
+        res.status(200).json({success: true, message: 'Form submitted successfully'});
     } catch (error) {
         console.error('Error saving contact form data:', error);
-        res.status(500).send('Error saving data');
+        res.status(500).json({success: false, message: error.message});
     }
 };
 
@@ -29,9 +29,9 @@ export const subscribeNewsletter = async (req, res) => {
         const values = [[name, email, new Date().toISOString()]]; // Format data correctly
         await appendToSheet('Sheet1!A:C', values); // Call appendToSheet with data
         await newsletterEmail(email, name);
-        res.status(200).send('Subscription successful');
+        res.status(200).json({success: true, message: 'Subscription successful'});
     } catch (error) {
         console.error('Error saving newsletter subscription:', error);
-        res.status(500).send('Error subscribing');
+        res.status(500).json({success: false, message: error.message});
     }
 };

@@ -56,6 +56,7 @@ export const sendResetEmail = (email, firstName, resetURL) => {
 
   return transporter.sendMail(mailOptions);
 };
+
 export const WelcomeEmail = (email, firstName) => {
   const mailOptions = {
     from: `"Bizfides" <${process.env.EMAIL_USER}>`,
@@ -70,12 +71,15 @@ export const WelcomeEmail = (email, firstName) => {
   return transporter.sendMail(mailOptions);
 };
 export const newsletterEmail = async (email, name) => {
+   // Generate the unsubscribe URL
+   const unsubscribeUrl = `http://localhost:8070/api/v1/unsubscribe?email=${encodeURIComponent(email)}`;
+
   const mailOptions = {
       from: `"Bizfides" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Bizfides Newsletter',
       template: 'newletterTemplate',
-      context: { name },
+      context: { name, unsubscribeUrl },
   };
 
   try {

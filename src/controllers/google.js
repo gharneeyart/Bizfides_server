@@ -1,6 +1,6 @@
 import { appendToSheet } from "../helpers/googleSheet.js";
 import { newsletterEmail, contactFormEmail, contactEmail } from "../utils/sendEmail.js";
-import { emailExists, unsubscribeNewsletter } from "../helpers/googleSheet.js";
+import { emailExists} from "../helpers/googleSheet.js";
 import dotenv from 'dotenv';
 
 dotenv.config(); 
@@ -43,20 +43,4 @@ export const subscribeNewsletter = async (req, res) => {
     }
 };
 
-// Controller for handling unsubscribe request
-export const unsubscribe = async (req, res) => {
-    const { email } = req.body;
 
-    try {
-        const result = await unsubscribeNewsletter(email);
-
-        if (!result.success) {
-            return res.status(404).send(result.message);
-        }
-
-        res.status(200).send(result.message);
-    } catch (error) {
-        console.error('Error processing unsubscribe request:', error);
-        res.status(500).send('Error unsubscribing');
-    }
-};

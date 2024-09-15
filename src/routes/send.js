@@ -7,4 +7,5 @@ const router = express.Router();
 router.post('/gsubscribe', validateForm, subscribeNewsletter);
 router.post('/gcontact', validateForm, submitContactForms);
 
+
 export default router;

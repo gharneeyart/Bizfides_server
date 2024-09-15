@@ -22,3 +22,27 @@ export const appendToSheet = async (range, values) => {
     }
 };
 
+// Function to check if email already exists in Google Sheets
+export const emailExists = async (email) => {
+    
+    const RANGE = 'Sheet1!A:C'; // Adjust this based on where your data is stored
+
+    try {
+        // Get all values from the sheet
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: SHEET_ID,
+            range: RANGE,
+        });
+
+        const rows = response.data.values || [];
+
+        // Check if the email exists
+        const emailExists = rows.some(row => row[1] === email);
+
+        return emailExists;
+    } catch (error) {
+        console.error('Error fetching data from Google Sheets:', error);
+        throw new Error('Error fetching data from Google Sheets');
+    }
+};
+

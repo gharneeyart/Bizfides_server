@@ -206,6 +206,13 @@ export const login = async (req, res) => {
         .json({ success: false, message: "User not found or not verified" });
     }
 
+    // Check if the user is verified
+    if (!user.isVerified) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User is not verified" });
+    }
+
     // Check if the user has registered with Google
 
     if (user.googleId && user.googleId != "reset") {

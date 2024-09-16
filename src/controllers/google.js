@@ -31,7 +31,8 @@ export const subscribeNewsletter = async (req, res) => {
         // Check if the email already exists
         const exists = await emailExists(email);
         if (exists) {
-            return res.status(400).send('Email already subscribed');
+            return res.status(400).json({ success: false, message: 'Email already exist' });
+
         }
         const values = [[name, email, new Date().toISOString()]]; // Format data correctly
         await appendToSheet('Sheet1!A:C', values); // Call appendToSheet with data

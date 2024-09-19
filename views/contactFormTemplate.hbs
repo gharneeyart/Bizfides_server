@@ -4,14 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us Message</title>
+    <style>
+        body {
+            font-family: Inter, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            background-color: #1A1F71;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 10px 10px;
+        }
+        .email-header img {
+            max-width: 100px;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body h1 {
+            color: #2B2B2B;
+            font-size: 24px;
+            text-align: center;
+        }
+        .email-body .name{
+            font-family: Roboto, sans-serif;
+            font-weight: 600;
+        }
+        .email-body p {
+            color: #2B2B2B;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .email-body a {
+            color: #1A1F71;
+            text-decoration: none;
+        }
+        .email-footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #2B2B2B;
+        }
+        .email-footer a {
+            color: #192b64;
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        @media screen and (max-width: 600px) {
+            .email-body h1 {
+                font-size: 20px;
+            }
+            .email-body p {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>New Contact Us Message</h2>
-    <p><strong>Name:</strong> {{name}}</p>
-    <p><strong>Email:</strong> {{email}}</p>
-    <p><strong>Subject:</strong> {{subject}}</p>
-    <p><strong>Message:</strong></p>
-    <p>{{message}}</p>
-    <p>You can download the contacts' sheet <a href={{downloadLink}}>here</a>.</p>
+    <div class="email-container">
+        <div class="email-header">
+            <img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749344/Component_23_kveaih.png" alt="Bizfides Logo">
+        </div>
+        <div class="email-body">
+            <h1>New Contact Us Message</h1>
+            <p><strong>Name:</strong> {{name}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Subject:</strong> {{subject}}</p>
+            <p><strong>Message:</strong></p>
+            <p>{{message}}</p>
+            <p>You can download the contacts' sheet <a href={{downloadLink}}>here</a>.</p>
+                </div>
+        <div class="email-footer">
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749394/Group_85_j0mzqd.png" alt="Facebook"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725457343/h2bx7ealhirzxfmeoezf.png" alt="Twitter"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749469/Group_87_x2fqro.png" alt="LinkedIn"></a>
+            <a href="#"><img src="https://res.cloudinary.com/dhkblplov/image/upload/v1725749428/Group_88_ihoec5.png" alt="Instagram"></a>
+            <p>Copyright © 2024</p>
+        </div>
+    </div>
 </body>
 </html>
+
+
+
+

@@ -31,7 +31,7 @@ export const subscribeNewsletter = async (req, res) => {
         // Check if the email already exists
         const exists = await emailExists(email);
         if (exists) {
-            return res.status(400).json({ success: false, message: 'Email already exist' });
+            return res.status(400).json({ success: false, message: 'Email already subscribed' });
 
         }
         const values = [[name, email, new Date().toISOString()]]; // Format data correctly

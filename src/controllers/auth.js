@@ -210,7 +210,7 @@ export const login = async (req, res) => {
     if (!user.isVerified) {
       return res
         .status(400)
-        .json({ success: false, message: "User is not verified" });
+        .json({ success: false, message: "Unverified Email" });
     }
 
     // Check if the user has registered with Google
